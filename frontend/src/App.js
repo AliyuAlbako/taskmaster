@@ -23,3 +23,36 @@ function App() {
 }
 
 export default App;
+
+// create task
+const User = require("./User"); // Import User model
+const Task = require("./Task"); // Import Task model
+
+const createTask = async () => {
+  try {
+    // Example: Find a user by email (ensure the user exists)
+    const user = await User.findOne({ email: "johndoe@example.com" });
+
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+
+    // Create a task for the user
+    const newTask = new Task({
+      userId: user._id, // Reference the user ID
+      title: "Complete TaskMaster Project",
+      description: "Work on the full-stack task management system.",
+      priority: "high",
+      deadline: new Date("2024-12-01T23:59:59Z"),
+    });
+
+    await newTask.save();
+    console.log("Task created successfully:", newTask);
+  } catch (err) {
+    console.error("Error creating task:", err.message);
+  }
+};
+
+createTask();
+
